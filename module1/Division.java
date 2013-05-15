@@ -30,6 +30,7 @@ public class Division {
 	
 	public static void division(int a, int b)
 	{
+		try{
 		int z = a;
 		String s = "  ";
 		while (z / 10 != 0)
@@ -37,8 +38,11 @@ public class Division {
 			s+=" ";
 			z /= 10;
 		}
+		if(a / b > 0)
+		{
 		System.out.println("  " + a + "|" + b);
 		System.out.println("¯" + s + "¯¯¯¯¯¯¯¯¯¯");
+		}
 		
 		ArrayList<Integer> array = new ArrayList<Integer>();
 		ArrayList<Integer> result = new ArrayList<Integer>();
@@ -98,14 +102,16 @@ public class Division {
 		
 		else
 		{
+			
 			int i = 0;
 			c = array.get(0);
 			while (c < b)
 			{
+				
 				i++;
-				if( i > array.size()-1)
-					System.out.println("ne delitsa na celo");
+				
 				c = c * 10 + array.get(i);
+				
 			}
 			
 			result.add(c / b);
@@ -141,16 +147,17 @@ public class Division {
 				}
 			
 			System.out.println("   " + e);
+		
+		
+		
 		}
+		}
+		catch (IndexOutOfBoundsException ie){
+			System.out.println("ne delitsa na celo");
+			}
 		
 		
 		
-		
-		
-		
-		System.out.println(array);
-		System.out.println(s.length());
-		System.out.println("y= " + y);
 	}
 	
 	
