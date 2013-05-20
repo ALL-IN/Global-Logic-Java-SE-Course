@@ -9,14 +9,13 @@ public class DivideInColumn {
 
 	/**
 	 * @param args
+	 * Написать программу деления целых чисел в столбик.
+	 * Программа должна принимать делимое и делитель из консоли и выводить на экран столбик деления, частное и остаток.
 	 */
 	public static void main(String[] args) throws NumberFormatException, IOException {
-		// TODO Auto-generated method stub
 		int devident = input();
 		int divisor = input();
 		output(division(devident, divisor));
-		
-		
 	}
 	
 	public static int input() throws NumberFormatException, IOException
@@ -123,7 +122,7 @@ public class DivideInColumn {
 
 	private static boolean isNegativeSign(int divident, int divisor)
 	{
-		return ((divident < 0 && divisor > 0) || (divident < 0 && divisor > 0));
+		return ((divident < 0 && divisor > 0) || (divident > 0 && divisor < 0));
 	}
 	
 	private static int howMuchDigits(int number){
