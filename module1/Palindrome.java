@@ -1,4 +1,4 @@
-package module1;
+package ua.kpi_java_training.alekseenko.module1;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,8 +6,9 @@ import java.util.ArrayList;
 public class Palindrome {
 
 	/**
-	 * @param args
-	 * @throws IOException 
+	 * Ќаписать программу, котора€ находит все подстроки (длиной больше 2) данной строки, €вл€ющиес€ палиндромами. 
+	 * ѕалиндромом считают строку, котора€ симметрична относительно ее середины. 
+	 * ѕрограмма должна принимать строку из консоли и выводить соответствующие подстроки на экран.
 	 */
 	public static void main(String[] args) throws IOException{
 		String s = input();
@@ -32,7 +33,6 @@ public class Palindrome {
 			if(palindromesForEachI.size() > 0){
 				palindromesForEachI.remove(0);
 				allPalindromes.addAll(palindromesForEachI);
-				
 			}
 		}
 		return allPalindromes;
@@ -41,11 +41,11 @@ public class Palindrome {
 	private static  ArrayList<String> findPalindromes (char [] string, int n, int k){
 		ArrayList <String> palindromesForEachI = new ArrayList <String>();
 		String palindrome = "";	
-		if ((k - n)==2){
+		if ((k - n) == 2){
 			palindrome += string[k-1];
 		}
 				
-		while (string[n]==string[k]){
+		while (string[n] == string[k]){
 			palindrome = string[n] + palindrome + string[k];
 			palindromesForEachI.add(palindrome);
 			n--;
