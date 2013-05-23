@@ -1,4 +1,6 @@
-package ua.kpi_java_training.alekseenko.module1;
+package ua.kpi_java_training5.alekseenko.module1;
+
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,120 +10,141 @@ import java.util.ArrayList;
 public class DivideInColumn {
 
 	/**
-	 * @param args
-	 * Написать программу деления целых чисел в столбик.
-	 * Программа должна принимать делимое и делитель из консоли и выводить на экран столбик деления, частное и остаток.
+     *
+     * The class divide two integer number in column
+     *
+     * @autor Aleksey Alekssenko
+     * @version 1.10
+     * @since 2013-05-14
+     *
 	 */
 	public static void main(String[] args) throws NumberFormatException, IOException{
-		int devident = input("devident");
+		int dividend = input("dividend");
 		int divisor = input("divisor");
-		output(division(devident, divisor));
+		output(division(dividend, divisor));
 	}
-	
-	public static int input(String asd) throws NumberFormatException, IOException{
-		System.out.println(String.format("Please, input %s", asd));
+
+    /**
+     * Inputs a variable
+     *
+     * @param nameOfVariable   name of variable which we input
+     * @return number which was inputted
+     * @throws NumberFormatException
+     * @throws IOException
+     */
+	public static int input(String nameOfVariable) throws NumberFormatException, IOException{
+		System.out.println(String.format("Please, input %s", nameOfVariable));
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		int a = Integer.parseInt(bf.readLine());
-		return a;
+		int number = Integer.parseInt(bf.readLine());
+		return number;
 	}
-	
-	public static ArrayList<String> division(int devident, int divisor) throws NumberFormatException, IOException{
+
+    /**
+     * Divides two integer number and adds all intermediate result to list
+     *
+     * @param dividend
+     * @param divisor
+     * @return list with all intermediate results
+     * @throws NumberFormatException
+     * @throws IOException
+     */
+	public static ArrayList<String> division(int dividend, int divisor) throws NumberFormatException, IOException{
 		ArrayList<String> pseudographics = new ArrayList<String>();
 		try{
-			
-		ArrayList<Integer> digitsInDevident = new ArrayList<Integer>();
+		ArrayList<Integer> digitsInDividend = new ArrayList<Integer>();
 		ArrayList<Integer> resultByDigits = new ArrayList<Integer>();
-		boolean negativeSign = isNegativeSign(devident, divisor);
-		devident = Math.abs(devident);
-		divisor = Math.abs(divisor);
+		boolean negativeSign = isNegativeSign(dividend, divisor);
 		String indent = "  ";
-		String minus = " ¯";
-		
-		if (negativeSign == false){
-			pseudographics.add("  " + devident + "|" + divisor);
-		} else {
-			pseudographics.add(" -" + devident + "|" + divisor);
-		}
-		
-		pseudographics.add(minus + signPerDigits(howMuchDigits(devident), " "));
-		
-		digitsInDevident = splitIntoDigits(devident);
-		
-		int firstDevident = digitsInDevident.get(0);
+		isDividendLessZero(dividend, divisor, pseudographics);
+		dividend = Math.abs(dividend);
+		divisor = Math.abs(divisor);
+		digitsInDividend = splitIntoDigits(dividend);
+		int firstDivident = digitsInDividend.get(0);
 		int i = 1;
-		int integerDivision;
 		int reminder;
-		int subtrahend;
-		while(firstDevident < divisor){
-			if(i >= digitsInDevident.size()){
+		while(firstDivident < divisor){
+			if(i >= digitsInDividend.size()){
 				break;
 			}
-			firstDevident = firstDevident * 10 + digitsInDevident.get(i);
+			firstDivident = firstDivident * 10 + digitsInDividend.get(i);
 			i++;
 		}
-		integerDivision = firstDevident / divisor;
-		resultByDigits.add(integerDivision);
-		subtrahend =  integerDivision * divisor;
-		int subtrahendHasdigit = howMuchDigits(subtrahend);
-		pseudographics.add(indent + subtrahend);
-		reminder = firstDevident - subtrahend;
-		pseudographics.add(indent + signPerDigits(howMuchDigits(subtrahend), "¯"));
-		while(i < digitsInDevident.size()){
-			int anotherDevident = digitsInDevident.get(i);
+		reminder = extractReminder(firstDivident, divisor, resultByDigits, pseudographics);
+		while(i < digitsInDividend.size()){
 			if(reminder == 0){
-				pseudographics.add(indent + anotherDevident);
-				integerDivision = anotherDevident / divisor;
-				resultByDigits.add(integerDivision);
-				subtrahend =  integerDivision * divisor;
-				pseudographics.add(minus + subtrahend);
-				reminder = anotherDevident - subtrahend;
-				pseudographics.add(indent + signPerDigits(howMuchDigits(subtrahend), "¯"));
+				reminder = extractReminder(digitsInDividend.get(i), divisor, resultByDigits, pseudographics);
 				i++;
 			} else {
-				anotherDevident = reminder * 10 + digitsInDevident.get(i);
-				pseudographics.add(indent + anotherDevident);
-				integerDivision = anotherDevident / divisor;
-				resultByDigits.add(integerDivision);
-				subtrahend =  integerDivision * divisor;
-				pseudographics.add(minus + subtrahend);
-				reminder = anotherDevident - subtrahend;
-				pseudographics.add(indent + signPerDigits(howMuchDigits(subtrahend), "¯"));
+				reminder = extractReminder((reminder * 10 + digitsInDividend.get(i)), divisor, resultByDigits, pseudographics);
 				i++;
 			}
 		}
 		pseudographics.add(indent + reminder);
-		
-		pseudographics = printresult( pseudographics,  resultByDigits, negativeSign, subtrahendHasdigit, howMuchDigits(divisor));
-		
+		pseudographics = combineAllResults(pseudographics, resultByDigits, negativeSign, howMuchDigits(divisor));
 		} catch (ArithmeticException ie) {
 				System.out.println("You mustn't diveded by zero");
-				System.out.println("Please, re-enter devident and divisor");
-				devident = input("devident");
+				System.out.println("Please, re-enter dividend and divisor");
+				dividend = input("dividend");
 				divisor = input("divisor");
-				division(devident,divisor);
+				division(dividend,divisor);
 			}
 		return pseudographics;
 	}
-	
-	private static boolean isNegativeSign(int divident, int divisor){
-		return ((divident < 0 && divisor > 0) || (divident > 0 && divisor < 0));
+
+    /**
+     * Finds sign of division of 2 number
+     *
+     * @param dividend
+     * @param divisor
+     * @return true if result of division "-", false if "+"
+     */
+	public static boolean isNegativeSign(int dividend, int divisor) {
+		
+		return ((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0));
 	}
-	
-	private static int howMuchDigits(int number){
+
+    /**
+     * Finds sign of 2 number and adds to list
+     *
+     * @param dividend
+     * @param divisor
+     * @param pseudographics list with intermediate result
+     */
+	public static void isDividendLessZero(int dividend, int divisor, ArrayList<String> pseudographics) {
+		if (dividend < 0) {
+			pseudographics.add(" " + dividend + "|" + divisor);
+			pseudographics.add(" -" + signPerDigits(howMuchDigits(dividend), " "));
+		} else {
+			pseudographics.add("  " + dividend + "|" + divisor);
+			pseudographics.add(" -" + signPerDigits(howMuchDigits(dividend), " "));
+		}
+	}
+
+    /**
+     * Finds amount of digits in number
+     *
+     * @param number
+     * @return amount of digits in number
+     */
+	public static int howMuchDigits(int number) {
 		int count = 1;
-		while (number / 10 != 0)
-		{
+		while (number / 10 != 0) {
 			count++;
 			number /= 10;
 		}
 		return count;
 	}
-	
-	private static ArrayList<Integer> splitIntoDigits(int number){
+
+    /**
+     * Writes number in list by digits
+     *
+     * @param number
+     * @return list of number digits
+     */
+	public static ArrayList<Integer> splitIntoDigits(int number) {
 		ArrayList <Integer> digitsInNumber = new ArrayList <Integer>();
-		do 
-		{
-			digitsInNumber.add(0, number % 10);
+		do {
+		    digitsInNumber.add(0, number % 10);
 			number /= 10;
 			if (number / 10 == 0 & number % 10 != 0)
 				digitsInNumber.add(0, number % 10);
@@ -129,21 +152,58 @@ public class DivideInColumn {
 		
 		return digitsInNumber;
 	}
-	
-	private static String signPerDigits(int digits, String sign){
+
+    /**
+     * Returns reminder from difference of number and multiply from max integer from number divides of divisor
+     * Adds result to list
+     * @param number
+     * @param divisor
+     * @param resultByDigits  integer result from divide
+     * @param pseudographics  list of all results
+     * @return difference
+     */
+	private static int extractReminder(int number, int divisor, ArrayList<Integer> resultByDigits, ArrayList<String> pseudographics) {
+		int integerDivision;
+		int reminder;
+		int subtrahend;
+		integerDivision = number / divisor;
+		resultByDigits.add(integerDivision);
+		subtrahend =  integerDivision * divisor;
+		pseudographics.add("  " + subtrahend);
+		reminder = number - subtrahend;
+		pseudographics.add("  " + signPerDigits(howMuchDigits(subtrahend), "¯"));
+		return reminder;
+	}
+
+    /**
+     * Creates string with set sign of length by amount of digits
+     *
+     * @param amountOfDigits
+     * @param sign
+     * @return string with set sign
+     */
+	private static String signPerDigits(int amountOfDigits, String sign){
 		StringBuilder sb= new StringBuilder ("");
 		int count = 0;
-		while(count < digits){
+		while(count < amountOfDigits){
 			sb.append(sign);
 			count++;
 		}
 		return sb.toString();
 	}
-	
-	private static ArrayList<String> printresult
-		(ArrayList<String> pseudographics, ArrayList<Integer> resultByDigits, boolean negativeSign, int subtrahendHasdigit, int divisorHasDigits){
+
+    /**
+     * Combines results of divide
+     *
+     * @param pseudographics
+     * @param resultByDigits
+     * @param negativeSign
+     * @param divisorHasDigits
+     * @return list with all intermediate results
+     */
+	private static ArrayList<String> combineAllResults
+    (ArrayList<String> pseudographics, ArrayList<Integer> resultByDigits, boolean negativeSign, int divisorHasDigits) {
 		int res = resultByDigits.get(0);
-		
 		for(int i = 1; i < resultByDigits.size(); i++){
 			res = res * 10 + resultByDigits.get(i);
 		}
@@ -151,25 +211,30 @@ public class DivideInColumn {
 			res *= -1;
 		}
 		int count = 0;
-		StringBuilder s = new StringBuilder("¯");
+		StringBuilder s = new StringBuilder("|");
 		if(divisorHasDigits > resultByDigits.size()){
 			while(count < divisorHasDigits){
 				count++;
-				s.append("¯");
+				s.append("-");
 			}
 		} else {
 			while(count < resultByDigits.size()){
 				count++;
-				s.append("¯");
+				s.append("-");
 			}
 		}
 		pseudographics.add(1, (pseudographics.get(1)) + s.toString());
 		pseudographics.remove(2);
-		pseudographics.add(2, (pseudographics.get(2)  + signPerDigits(subtrahendHasdigit - divisorHasDigits, " ") + "|" + res));
+		pseudographics.add(2, (pseudographics.get(2)  + signPerDigits(divisorHasDigits, " ") + "|" + res));
 		pseudographics.remove(3);
 		return pseudographics;
 	}
-	
+
+    /**
+     * Outputs results from a list
+     *
+     * @param pseudographics  list with results
+     */
 	private static void output (ArrayList <String> pseudographics){
 		for (String e : pseudographics){
 			System.out.println(e);
