@@ -1,22 +1,22 @@
-package ua.kpi_java_training5.alekseenko.src.module2;
+package ua.kpi_java_training5.alekseenko.src.module3;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Lesha
- * Date: 31.05.13
- * Time: 19:10
- * To change this template use File | Settings | File Templates.
+ * Author: Aleksey Alekseenko
+ * Date: 04.06.13
  */
 public class Position {
-    private int x;
-    private int y;
+    protected int x;
+    protected int y;
+
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
     public int getX() {
         return x;
     }
+
     public int getY() {
         return y;
     }
